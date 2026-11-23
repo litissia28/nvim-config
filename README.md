@@ -1,104 +1,70 @@
-# Neovim Configuration
+# nvim-config
 
-A modular, lightweight, and modern Neovim configuration written in Lua, tailored for **C and C++** development with a dark rose/sakura aesthetic.
+A lightweight, modular Neovim configuration in Lua, built for **C/C++** development.
 
-## Features
+**Includes:** lazy.nvim · clangd (via Mason) · nvim-cmp + LuaSnip · Treesitter · Telescope · nvim-tree · lualine · conform (format on save) · gitsigns · autopairs · which-key · sakura colorscheme with transparent background.
 
-- **Plugin Manager:** `lazy.nvim` with automatic bootstrapping and lazy-loading
-- **Colorscheme:** `sakura.nvim` with custom terminal transparency support
-- **Modular Structure:** Clean separation between core settings, keymaps, and plugins
-- **C/C++ Ready:** Configured for `clangd`, `CMake`, and `Make` workflows
+## Requirements
 
-## Directory Structure
+- **Neovim ≥ 0.12**
+- `git`, a C compiler (`gcc`/`clang`), `ripgrep`, `fd`
+- `tree-sitter` CLI (used to build parsers)
+- `clang-format` and `stylua` (optional, for format on save)
+- A [Nerd Font](https://www.nerdfonts.com/) set in your terminal
 
-```text
-~/.config/nvim/
-├── init.lua                  # Entry point
-├── .gitignore
-├── README.md
-└── lua/
-    └── config/
-        ├── options.lua       # Editor settings (indentation, line numbers, search, clipboard)
-        ├── keymaps.lua       # Custom keybindings and Leader shortcuts
-        ├── lazy.lua          # lazy.nvim bootstrap and plugin loader
-        └── plugins/
-            └── colorscheme.lua
-```
-
-## Prerequisites
-
-Make sure the following tools are installed on your system before launching Neovim:
-
-- **Neovim** (`>= 0.10.0`)
-- **Git** (required for `lazy.nvim` to clone plugins)
-- **A C/C++ compiler** (`gcc` or `clang`) — required for Treesitter parser compilation
-- **Ripgrep** (`rg`) and **fd** — required for Telescope live grep and file search
-- **A Nerd Font** (e.g., *JetBrainsMono Nerd Font*, *FiraCode Nerd Font*) configured in your terminal for file icons
-
-### Quick Dependency Install (Ubuntu / Linux Mint / Debian)
+**macOS**
 
 ```bash
-sudo apt update
-sudo apt install -y git ripgrep fd-find build-essential xclip
+brew install neovim git ripgrep fd tree-sitter clang-format stylua
 ```
 
-> **Note:** `xclip` (or `wl-clipboard` on Wayland) is needed so Neovim's `unnamedplus` clipboard integrates seamlessly with your system clipboard (`Ctrl+C` / `Ctrl+V`).
+**Debian / Ubuntu**
+
+```bash
+sudo apt install git ripgrep fd-find build-essential clang-format xclip
+```
 
 ## Installation
 
-1. **Back up your existing Neovim configuration** (if any):
-
 ```bash
+# 1. Back up any existing config
 mv ~/.config/nvim ~/.config/nvim.bak
 mv ~/.local/share/nvim ~/.local/share/nvim.bak
-```
 
-2. **Clone this repository:**
+# 2. Clone
+git clone https://github.com/litissia28/nvim-config.git ~/.config/nvim
 
-```bash
-git clone [https://github.com/](https://github.com/)<your-username>/<your-repo>.git ~/.config/nvim
-```
-
-3. **Launch Neovim:**
-
-```bash
+# 3. Launch
 nvim
 ```
 
-On first launch, `lazy.nvim` will automatically bootstrap itself, install all configured plugins, and apply the colorscheme.
+On first launch, lazy.nvim installs all plugins, Mason installs `clangd`, and Treesitter compiles its parsers. Restart Neovim once it's done. Run `:checkhealth` if something looks off.
 
-## Terminal Transparency Setup
+## Usage
 
-This configuration clears Neovim's background highlight groups (`bg = "none"`) so your terminal emulator controls the dark translucent tint and blur effect.
+Leader key: `Space`. Press it and wait to see every shortcut via which-key.
 
-Configure your terminal opacity around **85%–90%** (`0.88`):
+| Keys | Action |
+| --- | --- |
+| `<leader>e` | Toggle file explorer |
+| `<leader>ff` / `fg` / `fb` / `fr` | Find files / grep / buffers / recent files |
+| `gd` / `gD` / `gr` / `K` | Definition / declaration / references / hover |
+| `<leader>rn` / `<leader>ca` | Rename symbol / code action |
+| `<leader>d`, `[d` / `]d` | Show diagnostic / previous / next |
+| `<leader>f` | Format buffer |
+| `]c` / `[c`, `<leader>hp` / `hr` | Next / previous Git hunk, preview / reset |
+| `<leader>w` / `<leader>q` | Save / quit |
+| `<C-h/j/k/l>` | Move between splits |
 
-- **Kitty** (`~/.config/kitty/kitty.conf`):
-  ```conf
-  background_opacity 0.88
-  background_blur 20
-  ```
+## Structure
 
-- **Alacritty** (`~/.config/alacritty/alacritty.toml`):
-  ```toml
-  [window]
-  opacity = 0.88
-  blur = true
-  ```
+```text
+init.lua                 # Entry point
+lua/config/
+├── options.lua          # Editor options
+├── keymaps.lua          # Global keymaps
+├── lazy.lua             # lazy.nvim bootstrap
+└── plugins/             # One file per plugin group
+```
 
-- **WezTerm** (`~/.wezterm.lua`):
-  ```lua
-  config.window_background_opacity = 0.88
-  ```
-
-- **GNOME Terminal / Linux Mint Terminal:**
-  Open **Preferences** -> **Colors** -> check **Use transparent background** and set transparency to **10%–15%**.
-
-## Keybindings Overview
-
-- **Leader key:** `Space`
-- `jk` (Insert mode): Exit to Normal mode
-- `<leader>w` / `<leader>q`: Save / Quit window
-- `<C-h/j/k/l>` or `<C-Arrows>`: Navigate between splits
-- `J` / `K` (Visual mode): Move selected block down / up with auto-indentation
-- `<C-d>` / `<C-u>`: Scroll half-page and center cursor
+> **Transparency:** the background is cleared so your terminal handles opacity and blur (e.g. `background_opacity 0.88` in Kitty).
