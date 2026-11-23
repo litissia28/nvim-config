@@ -1,6 +1,7 @@
 return {
   "anAcc22/sakura.nvim",
   name = "sakura",
+  dependencies = { "rktjmp/lush.nvim" }, -- Required by sakura.nvim
   lazy = false,
   priority = 1000, -- Load first so colors apply before any UI component
   config = function()
