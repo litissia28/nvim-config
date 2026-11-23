@@ -143,4 +143,28 @@ return {
             vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = "none" })
         end,
     },
+    -- 4. Keybinding guide (which-key)
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    opts = {
+      preset = "helix", -- Compact floating layout in bottom-right corner
+      win = {
+        border = "rounded", -- Sharp square border matching sakura.nvim
+      },
+      spec = {
+        { "<leader>c", group = "Code (LSP)" },
+        { "<leader>f", group = "Find / Format" },
+        { "<leader>h", group = "Git Hunks" },
+        { "<leader>r", group = "Rename" },
+      },
+    },
+    config = function(_, opts)
+      require("which-key").setup(opts)
+
+      -- Transparent background to match sakura.nvim
+      vim.api.nvim_set_hl(0, "WhichKeyNormal", { bg = "none" })
+      vim.api.nvim_set_hl(0, "WhichKeyBorder", { bg = "none" })
+    end,
+  },
 }
