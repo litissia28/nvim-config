@@ -97,4 +97,50 @@ return {
             })
         end,
     },
+    -- 3. File Explorer (nvim-tree)
+    {
+        "nvim-tree/nvim-tree.lua",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+        keys = {
+            { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
+        },
+        config = function()
+            require("nvim-tree").setup({
+                view = {
+                    width = 32,
+                    side = "left",
+                },
+                renderer = {
+                    group_empty = true,
+                    indent_markers = {
+                        enable = true,
+                    },
+                    icons = {
+                        show = {
+                            git = true,
+                            folder = true,
+                            file = true,
+                            folder_arrow = true,
+                        },
+                    },
+                },
+                filters = {
+                    dotfiles = false, -- Show hidden files like .gitignore or .clang-format
+                    custom = { "^\\.git$" },
+                },
+                git = {
+                    enable = true,
+                    ignore = false,
+                },
+            })
+
+            -- Keep background transparent to match sakura.nvim
+            vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NvimTreeNormalNC", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = "none" })
+        end,
+    },
 }
